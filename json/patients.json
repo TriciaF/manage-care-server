@@ -1,0 +1,61 @@
+{
+    "name": {
+        "firstname": "Bill",
+        "lastname": "Forrester"
+    },
+    "medication": [{
+        "name": "Zolof",
+        "dosage": "10mg",
+        "schedule": "2 times per day",
+        "pharmacy": {
+            "name": "CVS",
+            "address": "123 Main Street, Rochester, NY 14617",
+            "phoneNumber": "585-675-3454"
+        },
+        "physician": {
+            "name": "Dr. Steve Smith",
+            "address": "23 Berber Road, Rocheseter, NY 14580",
+            "phoneNumber": "585-671-4545"
+        }
+    }]
+} {
+    "name": {
+        "firstname": "Paul",
+        "lastname": "Lurz"
+    },
+    "medication": [{
+        "name": "Aspirin",
+        "dosage": "5mg",
+        "schedule": "2 times per day",
+        "pharmacy": {
+            "name": "CVS",
+            "address": "123 Main Street, Rochester, NY 14617",
+            "phoneNumber": "585-675-3454"
+        },
+        "physician": {
+            "name": "Dr. Steve Smith",
+            "address": "23 Berber Road, Rocheseter, NY 14580",
+            "phoneNumber": "585-671-4545"
+        }
+    }]
+} {
+    "name": {
+        "firstname": "Carol",
+        "lastname": "Lurz"
+    },
+    "medication": [{
+        "name": "Aspirin",
+        "dosage": "5mg",
+        "schedule": "2 times per day",
+        "pharmacy": {
+            "name": "CVS",
+            "address": "123 Main Street, Rochester, NY 14617",
+            "phoneNumber": "585-675-3454"
+        },
+        "physician": {
+            "name": "Dr. Steve Smith",
+            "address": "23 Berber Road, Rocheseter, NY 14580",
+            "phoneNumber": "585-671-4545"
+        }
+    }]
+}

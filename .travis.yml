@@ -1,0 +1,9 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: pVtQUF7YtsR/MiCjg00HZFgj1/gmZm7qt2+7H/6Tn3q/pyhBkhWwhQTqcoJ7NF1nl5L5DkZPqcdkD+71PWU4EYS1vAIiSkoCeWz/iN1f1t/aThwXQPu3guR/ykN4dqOmMq8v+J/uIw7ABOv/4dg7YWfPRUr1QmDwzb7JxTYAHuJtb0vKJANyvA8cPJu1kZ5qV829iAdd5KMryVemAAY84z7SvS8sqb75pgNtYwziHudQA1r/ie4JJCIxRDR9FrG7X6iyHddBqXY5FBTD+quxeNMMwA350wH73L9as5zrrdbLJWz9Qjt+a0lHNgtbkJRoEX4LR5agH1ziMnBiLf2w0bLqGWfO16CTe1WW1L+7uCcyPLs7mDoP587FokLB44iQSwXc6RmG1HC8taMgMRJ460tUq+fk/mEdr2vY0VnuXimTVD4xcRuTV7Cq5He5IqN+EfnvG/13+Civ8qiV100bMfSmf6cra1YortAdhGxVoK3mDedJtpayaMdtV+62qiy9kDGjsmiSa+qWmtbgTpgPz/fXyN0ktpDNhhK5s5ClYdL9yHYm0MXN+WQgvY9IuQuKf+wjzzPOSEevFTCYWWZT/9K4NywlPfSyonAn8GrCmN345Ar7xpfrEm5WwGRMMkmk16vKpKniX16EDtfcsDI29k3ErOZ7FHwXeHLgo8ZGN0Q=
+  app: manage-care-server
