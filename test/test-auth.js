@@ -5,8 +5,8 @@ const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
 
 const { app, runServer, closeServer } = require('../server');
-const { User } = require('../users');
-const { JWT_SECRET } = require('../config');
+const { Users } = require('../users/user-schema.js');
+const { JWT_SECRET, TEST_DATABASE } = require('../config');
 
 const expect = chai.expect;
 
@@ -18,98 +18,75 @@ chai.use(chaiHttp);
 describe('Auth endpoints', function () {
 	const username = 'exampleUser';
 	const password = 'examplePass';
-	const firstName = 'Example';
-	const lastName = 'User';
-	const email = 'hahaha@yahoo.com';
-	const bday_1 = '03/13/2003';
-	const bday = '2003-03-13T04:00:00.000Z';
-	const initialFund = 5000;
-	const currentFund = 5000;
-	const level = 1;
-	const risk_1 = [];
-	const risk = 'undefined';
-	const id = '5abd57bd2b88da823c3075a1';
 
 	before(function () {
-		return runServer();
+    return runServer(TEST_DATABASE);
+    
 	});
 
-	after(function () {
-		return closeServer();
-	});
+	// after(function () {
+	// 	return closeServer(TEST_DATABASE);
+	// });
 
 	beforeEach(function() {
-		return User.hashPassword(password).then(password =>
-			User.create({
+		return Users.hashPassword(password).then(password =>
+			Users.create({
 				username,
 				password,
-				firstName,
-				lastName,
-				bday_1,
-				email
 			})
 		);
 	});
 
 	afterEach(function () {
-		return User.remove({});
+		return Users.remove({});
 	});
 
-	describe('/api/auth/login', function () {
+	describe('/auth/login', function () {
 		it('Should reject requests with no credentials', function () {
 			return chai
 				.request(app)
-				.post('/api/auth/login')
-				.then(() =>
-					expect.fail(null, null, 'Request should not succeed')
-				)
+				.post('/auth/login')
+				.then(res => {
+					expect(res).to.have.status(400);
+        })
 				.catch(err => {
 					if (err instanceof chai.AssertionError) {
 						throw err;
 					}
-
-					const res = err.response;
-					expect(res).to.have.status(400);
 				});
 		});
 		it('Should reject requests with incorrect usernames', function () {
 			return chai
 				.request(app)
-				.post('/api/auth/login')
+				.post('/auth/login')
 				.send({ username: 'wrongUsername', password })        
-				.then(() =>
-					expect.fail(null, null, 'Request should not succeed')
-				)
+				.then(res => {
+					expect(res).to.have.status(401);
+        })
 				.catch(err => {
 					if (err instanceof chai.AssertionError) {
 						throw err;
 					}
-
-					const res = err.response;
-					expect(res).to.have.status(401);
 				});
 		});
 		it('Should reject requests with incorrect passwords', function () {
 			return chai
 				.request(app)
-				.post('/api/auth/login')
+				.post('/auth/login')
 				.send({ username, password: 'wrongPassword' })
-				.then(() =>
-					expect.fail(null, null, 'Request should not succeed')
-				)
+				.then(res => {
+					expect(res).to.have.status(401);
+        })
 				.catch(err => {
 					if (err instanceof chai.AssertionError) {
 						throw err;
 					}
-
-					const res = err.response;
-					expect(res).to.have.status(401);
 				});
 		});
 		it('Should return a valid auth token', function () {
 			return chai
 				.request(app)
-				.post('/api/auth/login')
+				.post('/auth/login')
 				.send({ username, password })
 				.then(res => {
 					expect(res).to.have.status(200);
@@ -120,47 +97,29 @@ describe('Auth endpoints', function () {
 					const payload = jwt.verify(token, JWT_SECRET, {
 						algorithm: ['HS256']
 					});
-					console.log('this is the payload = ', payload);
-					expect(payload.user).to.deep.equal({
-						username,
-						firstName,
-						lastName,
-						id,
-						bday,
-						email,
-						level,
-						initialFund,
-						currentFund,
-						risk
 					});
 				});
 		});
-	});
-
-	describe('/api/auth/refresh', function () {
+	describe('/auth/refresh', function () {
 		it('Should reject requests with no credentials', function () {
 			return chai
 				.request(app)
-				.post('/api/auth/refresh')
-				.then(() =>
-					expect.fail(null, null, 'Request should not succeed')
-				)
+				.post('/auth/refresh')
+				.then(res => {
+					expect(res).to.have.status(401);
+        })
 				.catch(err => {
 					if (err instanceof chai.AssertionError) {
 						throw err;
 					}
-
-					const res = err.response;
-					expect(res).to.have.status(401);
 				});
 		});
 		it('Should reject requests with an invalid token', function () {
 			const token = jwt.sign(
 				{
 					username,
-					firstName,
-					lastName
-				},
+          password
+        },
 				'wrongSecret',
 				{
 					algorithm: 'HS256',
@@ -170,27 +129,23 @@ describe('Auth endpoints', function () {
 
 			return chai
 				.request(app)
-				.post('/api/auth/refresh')
+				.post('/auth/refresh')
 				.set('Authorization', `Bearer ${token}`)
-				.then(() =>
-					expect.fail(null, null, 'Request should not succeed')
-				)
+				.then(res => {
+					expect(res).to.have.status(401);
+        })
 				.catch(err => {
 					if (err instanceof chai.AssertionError) {
 						throw err;
 					}
-
-					const res = err.response;
-					expect(res).to.have.status(401);
 				});
 		});
 		it('Should reject requests with an expired token', function () {
 			const token = jwt.sign(
 				{
-					user: {
-						username,
-						firstName,
-						lastName
+					users: {
+            username,
+            password
 					},
 					exp: Math.floor(Date.now() / 1000) - 10 // Expired ten seconds ago
 				},
@@ -203,41 +158,56 @@ describe('Auth endpoints', function () {
 
 			return chai
 				.request(app)
-				.post('/api/auth/refresh')
+				.post('/auth/refresh')
 				.set('authorization', `Bearer ${token}`)
-				.then(() =>
-					expect.fail(null, null, 'Request should not succeed')
-				)
+				.then(res => {
+					expect(res).to.have.status(401);
+        })
 				.catch(err => {
 					if (err instanceof chai.AssertionError) {
 						throw err;
 					}
-
-					const res = err.response;
-					expect(res).to.have.status(401);
 				});
 		});
 		it('Should return a valid auth token with a newer expiry date', function () {
-			const token = jwt.sign(
-				{
-					user: {
-						username,
-						firstName,
-						lastName
-					}
-				},
-				JWT_SECRET,
-				{
-					algorithm: 'HS256',
-					subject: username,
-					expiresIn: '7d'
-				}
-			);
-			const decoded = jwt.decode(token);
-
-			return chai
+      let token;
+      return chai
+        .request(app)
+        .post('/login')
+        .send({
+          username,
+          password,
+        })
+        .then( res => {
+          expect(res).to.have.status(201);
+          token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWFkNGM2MDU2NjA3NGYxZTFjNGMwOTUxIiwidXNlcm5hbWUiOiJleGFtcGxlVXNlciIsInBhc3N3b3JkIjoiJDJhJDEwJHNQS2dpVlRUMjZvZmxwdThZZExxeC40dDAzdmJWMUZmOG0wWHZVTTFqUGN5dlRaV3hmSWtlIn0sImlhdCI6MTUyMzg5Mzc2NSwiZXhwIjoxNTI0NDk4NTY1LCJzdWIiOiJleGFtcGxlVXNlciJ9.gWwdsBYM3yXk-k2noiABMmTkHBc7jNqIdfEAch4DEJs';
+          // res.body.authToken;
+          console.log('token = ', token)
+        })
+        .catch( err => {
+          if(err instanceof chai.AssertionError)
+            throw err;
+        })
+			// const token = jwt.sign(
+			// 	{
+			// 		users: {
+      //       username,
+      //       password
+			// 		}
+			// 	},
+			// 	JWT_SECRET,
+			// 	{
+			// 		algorithm: 'HS256',
+			// 		subject: username,
+			// 		expiresIn: '7d'
+			// 	}
+			// );
+      // const decoded = jwt.decode(token);
+      .then(() => {   
+        const decoded = jwt.decode(token);
+			 return chai
 				.request(app)
-				.post('/api/auth/refresh')
+				.post('/auth/refresh')
 				.set('authorization', `Bearer ${token}`)
 				.then(res => {
 					expect(res).to.have.status(200);
@@ -247,13 +217,9 @@ describe('Auth endpoints', function () {
 					const payload = jwt.verify(token, JWT_SECRET, {
 						algorithm: ['HS256']
 					});
-					expect(payload.user).to.deep.equal({
-						username,
-						firstName,
-						lastName
-					});
 					expect(payload.exp).to.be.at.least(decoded.exp);
-				});
+        });
+      })
 		});
-	});
-});
+  });
+})

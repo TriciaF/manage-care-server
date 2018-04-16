@@ -21,6 +21,10 @@ userSchema.methods.validatePassword = function(password) {
 	return bcrypt.compareSync(password, this.password);
 };
 
+userSchema.statics.hashPassword = function(password) {
+	return bcrypt.hash(password, 10);
+};
+
 userSchema.methods.serialize = function() {
 	return {
 		id: this._id,
