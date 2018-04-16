@@ -11,7 +11,7 @@ patientRouter.use(bodyParser.json());
 
 
 /* ========== GET/READ ALL PATIENTS ========== */
-patientRouter.get('patient', (req, res) => {
+patientRouter.get('/patient', (req, res) => {
 	console.log('enter GET end point');
 	patients.get()
 		.then(response => {
@@ -25,7 +25,7 @@ patientRouter.get('patient', (req, res) => {
 });
 
 /* ========== GET/READ PATIENT BY ID ========== */
-patientRouter.get('patient/:id', (req, res) => {
+patientRouter.get('/patient/:id', (req, res) => {
 	console.log('enter GET/id end point');
 	patients.get(req.params.id)
 		.then(response => res.status(201).json(response.serialize()))
@@ -35,7 +35,7 @@ patientRouter.get('patient/:id', (req, res) => {
 });
 
 /* ========== POST/CREATE PATIENT ITEM ========== */
-patientRouter.post('patient', (req, res) => {
+patientRouter.post('/patient', (req, res) => {
 	console.log('enter post end point');
 	const requiredFields = ['name',
 		'medication',
@@ -99,7 +99,7 @@ patientRouter.post('patient', (req, res) => {
 });
 
 /* ========== PUT/UPDATE A SINGLE PATIENT ITEM OR REMOVE A MEDICATION ========== */
-patientRouter.put('patient/:id', (req, res) => {
+patientRouter.put('/patient/:id', (req, res) => {
 	console.log('enter put end point', req.body);
 
 	if (req.body.medication) {
@@ -150,7 +150,7 @@ patientRouter.put('patient/:id', (req, res) => {
 });
 
 /* ========== DELETE/REMOVE A SINGLE PATIENT ITEM ========== */
-patientRouter.delete('patient/:id', (req, res) => {
+patientRouter.delete('/patient/:id', (req, res) => {
 	console.log('enter delete end point');
 
 	patients.delete(req.params.id)

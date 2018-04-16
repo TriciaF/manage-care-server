@@ -15,7 +15,7 @@ const patients = {
 	},
 
 	get: function(id = null) {
-		console.log('Enter Patients:Geti ', id);
+		console.log('Enter Patients:Get id = ', id);
 		if (id === null) {
 			return Patients.find();
 		} else
