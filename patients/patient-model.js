@@ -43,9 +43,10 @@ const patients = {
 		}
 	},
 
-	delete: function(_id) {
+	delete: function(_name) {
 		console.log('Enter Patients:Delete id ');
-		return Patients.findByIdAndRemove(_id);
+		return Patients.findOneAndRemove(_name)
+		// return Patients.findByIdAndRemove(_id);
 
 	}
 

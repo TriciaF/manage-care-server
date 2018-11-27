@@ -150,10 +150,10 @@ patientRouter.put('/patient/:id', (req, res) => {
 });
 
 /* ========== DELETE/REMOVE A SINGLE PATIENT ITEM ========== */
-patientRouter.delete('/patient/:id', (req, res) => {
+patientRouter.delete('/patient', (req, res) => {
 	console.log('enter delete end point');
 
-	patients.delete(req.params.id)
+	patients.delete(req.body)
 		.then(response => res.status(204).json(response))
 		.catch(err => {
 			res.status(500).json({ message: 'Something went wrong: Delete Patient' });
