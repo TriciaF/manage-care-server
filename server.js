@@ -14,13 +14,13 @@ const patientRouter = require('./patients/patient-router');
 const userRouter = require('./users/user-router');
 const authRouter = require('./auth/auth-router');
 
-const { PORT, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
+const { PORT, TEST_DATABASE, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
 const { localStrategy, jwtStrategy } = require('./auth/strategies');
 
 const app = express();
 app.use(morgan('common'));
 app.use(cors({ origin: CLIENT_ORIGIN }));
-
+// app.use(cors());
 
 // ifor CORS
 app.use(function(req, res, next) 

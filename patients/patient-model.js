@@ -30,11 +30,6 @@ const patients = {
         return med
       });
 
-      // let updateObj = {
-      //   name: patientName,
-      //   medication: meds
-      // };
-
 			return Patients
 				.findByIdAndUpdate(_id, {$set:{'name': patientName, 'medication': meds}}, {new: true})
     } 
@@ -43,10 +38,10 @@ const patients = {
 		}
 	},
 
-	delete: function(_name) {
-		console.log('Enter Patients:Delete id ');
-		return Patients.findOneAndRemove(_name)
-		// return Patients.findByIdAndRemove(_id);
+	delete: function(_id) {
+		console.log('Enter Patients:Delete id ', _id);
+		// return Patients.findOneAndRemove(_name)
+		return Patients.findByIdAndRemove(_id);
 
 	}
 
