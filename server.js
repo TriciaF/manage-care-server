@@ -57,7 +57,7 @@ let server;
 function runServer(dbUrl) {
 	console.log('run server started');
 	return new Promise((resolve, reject) => {
-		mongoose.connect(dbUrl, { useMongoClient: true }, err => {
+		mongoose.connect(dbUrl,  err => {
 			if (err) {
 				return reject(err);
 			}
