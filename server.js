@@ -8,7 +8,6 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const morgan = require('morgan');
-const helmet = require('helmet');
 
 const patientRouter = require('./patients/patient-router');
 const userRouter = require('./users/user-router');
@@ -21,8 +20,6 @@ const app = express();
 app.use(morgan('common'));
 app.use(cors({ origin: CLIENT_ORIGIN }));
 // app.use(cors());
-
-app.use(helmet.referrerPolicy({policy: 'strict-origin-when-cross-origin'}));
 
 // ifor CORS
 app.use(function(req, res, next) 

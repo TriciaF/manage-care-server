@@ -3,7 +3,7 @@ exports.DATABASE_URL = 'mongodb+srv://Forrester:SandTrap64*@patients.fpkud.mongo
 //ports.TEST_DATABASE = 'mongodb://localhost/test-datatbase';
 
 exports.PORT = process.env.PORT || 8080;
-exports.CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'https://manage-care.netlify.com';
+exports.CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'https://manage-care.netlify.app';
 
 // local development value
 // exports.CLIENT_ORIGIN = 'http://localhost:3000';
