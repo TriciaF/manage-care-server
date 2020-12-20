@@ -1,4 +1,5 @@
-exports.DATABASE_URL = 'mongodb+srv://palforrester@gmail.com:SandTrap64*@patients.fpkud.mongodb.net/patients?retryWrites=true&w=majority';
+exports.DATABASE_URL = 'mongodb+srv://Forrester:Tjandsam01!@patients.fpkud.mongodb.net/patients?retryWrites=true&w=majority';
+
 exports.TEST_DATABASE = 'mongodb://localhost/test-datatbase';
 
 exports.PORT = process.env.PORT || 8080;
