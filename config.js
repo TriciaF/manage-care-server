@@ -1,6 +1,6 @@
 exports.DATABASE_URL = 'mongodb+srv://Forrester:SandTrap64*@patients.fpkud.mongodb.net/patients?retryWrites=true&w=majority';
 
-exports.TEST_DATABASE = 'mongodb://localhost/test-datatbase';
+//ports.TEST_DATABASE = 'mongodb://localhost/test-datatbase';
 
 exports.PORT = process.env.PORT || 8080;
 exports.CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'https://manage-care.netlify.com';
