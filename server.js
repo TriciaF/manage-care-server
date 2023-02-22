@@ -25,14 +25,17 @@ app.use(cors({ origin: CLIENT_ORIGIN }));
 // ifor CORS
 app.use(function(req, res, next) 
 {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-	res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+	res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
 	if (req.method === 'OPTIONS') {
-		res.setHeader('Access-control-Allow-Origin', '*')
-		return res.send(ok);
+		return res.send(204);
 	}
 	next();
+});
+
+app.options('/*', (_,res) => {
+	res.sendStatus(200);
 });
 
 passport.use(localStrategy);
