@@ -1,4 +1,4 @@
-exports.DATABASE_URL =  process.env.DATABASE_URL || 'mongodb+srv://Forrester:SandTrap64*@patients.fpkud.mongodb.net/patients?retryWrites=true&w=majority';
+exports.DATABASE_URL =  process.env.DATABASE_URL || 'mongodb://Forrester:SandTrap64*@patients.fpkud.mongodb.net/patients?retryWrites=true&w=majority';
 
 //ports.TEST_DATABASE = 'mongodb://localhost/test-datatbase';
 
