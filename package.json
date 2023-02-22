@@ -8,7 +8,7 @@
         "test": "mocha --exit"
     },
     "keywords": [],
-    "author": "",
+    "author": "Tricia Forrester",
     "license": "ISC",
     "dependencies": {
         "bcryptjs": "^2.4.3",

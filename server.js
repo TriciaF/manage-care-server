@@ -8,7 +8,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const mongodb = require('mongodb');
-const client = new mongodb.MongoClient(DATABASE_URL, { useNewUrlParser: true, useUnitifedTopology: true });
+// const client = new mongodb.MongoClient(DATABASE_URL, { useNewUrlParser: true, useUnitifedTopology: true });
 const morgan = require('morgan');
 
 const patientRouter = require('./patients/patient-router');
@@ -58,30 +58,10 @@ app.get('/protected', jwtAuth, (req, res) => {
 //server functions
 let server;
 
-function runServer(dbUrl) {
-	console.log('run server started');
-	return new Promise(( resolve, reject) => {
-		mongodb.connect(dbUrl, err => {
-			if (err) {
-				return reject(err);
-			}
-			server = app.listen(PORT, () => {
-				console.log(`Your app is listening on port ${PORT}`);
-				resolve();
-			})
-				.on('error', err => {
-					mongodb.disconnect();
-					reject(err);
-				});
-		});
-	});
-	};
-
-
 // function runServer(dbUrl) {
 // 	console.log('run server started');
-// 	return new Promise((resolve, reject) => {
-// 		mongoose.connect(dbUrl,  err => {
+// 	return new Promise(( resolve, reject) => {
+// 		mongodb.connect(dbUrl, err => {
 // 			if (err) {
 // 				return reject(err);
 // 			}
@@ -90,12 +70,32 @@ function runServer(dbUrl) {
 // 				resolve();
 // 			})
 // 				.on('error', err => {
-// 					mongoose.disconnect();
+// 					mongodb.disconnect();
 // 					reject(err);
 // 				});
 // 		});
 // 	});
-// }
+// 	};
+
+
+function runServer(dbUrl) {
+	console.log('run server started');
+	return new Promise((resolve, reject) => {
+		mongoose.connect(dbUrl,  err => {
+			if (err) {
+				return reject(err);
+			}
+			server = app.listen(PORT, () => {
+				console.log(`Your app is listening on port ${PORT}`);
+				resolve();
+			})
+				.on('error', err => {
+					mongoose.disconnect();
+					reject(err);
+				});
+		});
+	});
+}
 
 function closeServer() {
 	console.log('close server start');
@@ -113,6 +113,7 @@ function closeServer() {
 }
 
 if (require.main === module) {
+	console.log("Enter Server Start, database = ", DATABASE_URL)
 	runServer(DATABASE_URL).catch(err => console.error('Database did not start'));
 }
 
