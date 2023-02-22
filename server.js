@@ -28,7 +28,8 @@ app.use(function(req, res, next)
 	res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
 	res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
 	if (req.method === 'OPTIONS') {
-		return res.send(204);
+		res.setHeader('Access-control-Allow-Origin', '*')
+		return res.send(200);
 	}
 	next();
 });
