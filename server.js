@@ -7,6 +7,8 @@ const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+const mongodb = require('mongodb');
+const client = new mongodb.MongoClient(DATABASE_URL, { useNewUrlParser: true, useUnitifedTopology: true });
 const morgan = require('morgan');
 
 const patientRouter = require('./patients/patient-router');
@@ -16,6 +18,7 @@ const authRouter = require('./auth/auth-router');
 const { PORT, TEST_DATABASE, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
 const { localStrategy, jwtStrategy } = require('./auth/strategies');
 const { ok } = require('cli');
+const { resolve } = require('path');
 
 const app = express();
 app.use(morgan('common'));
@@ -57,8 +60,8 @@ let server;
 
 function runServer(dbUrl) {
 	console.log('run server started');
-	return new Promise((resolve, reject) => {
-		mongoose.connect(dbUrl,  err => {
+	return new Promise(( resolve, reject) => {
+		mongodb.connect(dbUrl, err => {
 			if (err) {
 				return reject(err);
 			}
@@ -67,12 +70,32 @@ function runServer(dbUrl) {
 				resolve();
 			})
 				.on('error', err => {
-					mongoose.disconnect();
+					mongodb.disconnect();
 					reject(err);
 				});
 		});
 	});
-}
+	};
+
+
+// function runServer(dbUrl) {
+// 	console.log('run server started');
+// 	return new Promise((resolve, reject) => {
+// 		mongoose.connect(dbUrl,  err => {
+// 			if (err) {
+// 				return reject(err);
+// 			}
+// 			server = app.listen(PORT, () => {
+// 				console.log(`Your app is listening on port ${PORT}`);
+// 				resolve();
+// 			})
+// 				.on('error', err => {
+// 					mongoose.disconnect();
+// 					reject(err);
+// 				});
+// 		});
+// 	});
+// }
 
 function closeServer() {
 	console.log('close server start');
