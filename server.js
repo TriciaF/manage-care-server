@@ -15,6 +15,7 @@ const authRouter = require('./auth/auth-router');
 
 const { PORT, TEST_DATABASE, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
 const { localStrategy, jwtStrategy } = require('./auth/strategies');
+const { ok } = require('cli');
 
 const app = express();
 app.use(morgan('common'));
@@ -29,7 +30,7 @@ app.use(function(req, res, next)
 	res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
 	if (req.method === 'OPTIONS') {
 		res.setHeader('Access-control-Allow-Origin', '*')
-		return res.send(200);
+		return res.send(ok);
 	}
 	next();
 });
